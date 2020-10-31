@@ -13,7 +13,8 @@ class CaptchaForm(forms.Form):
     captcha = ReCaptchaField(widget=ReCaptchaV3, label=False)
 
 
-class CreateUserForm(CaptchaForm, UserCreationForm):
+# class CreateUserForm(CaptchaForm, UserCreationForm):
+class CreateUserForm(UserCreationForm):
     email = forms.EmailField(required=True)
 
     class Meta:
@@ -30,7 +31,8 @@ class CreateUserForm(CaptchaForm, UserCreationForm):
         }
 
 
-class CreateProfileModelForm(CaptchaForm, forms.ModelForm):
+# class CreateProfileModelForm(CaptchaForm, forms.ModelForm):
+class CreateProfileModelForm(forms.ModelForm):
     use_required_attribute = False
 
     class Meta:

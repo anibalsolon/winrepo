@@ -15,7 +15,7 @@ from django.views.generic.detail import DetailView
 from dal.autocomplete import Select2QuerySetView
 
 from .models import Profile, Recommendation, Country
-from .forms import CreateProfileModelForm, RecommendModelForm
+from .forms import CreateProfileModelForm, RecommendModelForm, CreateUserForm
 
 
 class Home(ListView):
@@ -152,15 +152,16 @@ class UpdateProfile(SuccessMessageMixin, UpdateView):
         return reverse('profiles:detail', args=(self.object.id,))
 
 
-# class CreateUser(CreateView):
-#     form_class = CreateUserForm
-#     template_name = 'profiles/signup.html'
+class CreateUser(CreateView):
+    form_class = CreateUserForm
+    template_name = 'profiles/signup_form.html'
 
-#     def form_valid(self, form):
-#         form.save()
+    def form_valid(self, form):
+        form.save()
 
-#     def get_success_url(self):
-#         return reverse('profiles:create', kwargs={'pk': self.object.profile.pk})
+    def get_success_url(self):
+        return reverse('profiles:home')
+        # return reverse('profiles:create', kwargs={'pk': self.object.profile.pk})
 
 
 class CreateProfile(SuccessMessageMixin, CreateView):

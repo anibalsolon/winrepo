@@ -22,9 +22,6 @@ from core.views import IndexTemplateView
 
 
 urlpatterns = [
-    path('legacy/',
-         include('profiles.urls')),
-
     path('admin/',
          admin.site.urls),
 
@@ -41,17 +38,19 @@ urlpatterns = [
     path('accounts/',
          include('django.contrib.auth.urls')),
 
-    path('api/',
-         include('profiles.api.urls')),
+    path('',
+         include('profiles.urls')),
+#     path('api/',
+#          include('profiles.api.urls')),
 
-    path('api-auth/',
-         include('rest_framework.urls')),
+#     path('api-auth/',
+#          include('rest_framework.urls')),
 
-    path('api/rest-auth/',
-         include('rest_auth.urls')),
+#     path('api/rest-auth/',
+#          include('rest_auth.urls')),
 
-    path('api/rest-auth/registration/',
-         include('rest_auth.registration.urls')),
+#     path('api/rest-auth/registration/',
+#          include('rest_auth.registration.urls')),
 
-    re_path(r'^.*$', IndexTemplateView.as_view(), name='vue-entry-point'),
+#     re_path(r'^.*$', IndexTemplateView.as_view(), name='vue-entry-point'),
 ]

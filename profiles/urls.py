@@ -32,6 +32,8 @@ urlpatterns = [
          name='edit'),
     path('list/create', views.CreateProfile.as_view(),
          name='create'),
+    path('signup', views.CreateUser.as_view(),
+         name='signup'),
     path('list/<int:pk>/recommend', views.CreateRecommendation.as_view(),
          name='recommend_profile'),
     path('list/recommend', views.CreateRecommendation.as_view(),

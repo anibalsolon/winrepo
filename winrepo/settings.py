@@ -42,14 +42,6 @@ INSTALLED_APPS = [
     'dal_select2',
     'robots',
 
-    'webpack_loader',
-
-    'rest_framework',
-    'rest_framework.authtoken',
-
-    'rest_auth',
-    'rest_auth.registration',
-
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
