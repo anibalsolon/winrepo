@@ -14,11 +14,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import include, path, re_path
+from django.urls import include, path
 
-from django_registration.backends.one_step.views import RegistrationView
-
-from core.views import IndexTemplateView
+# from django_registration.backends.one_step.views import RegistrationView
 
 
 urlpatterns = [
@@ -28,9 +26,10 @@ urlpatterns = [
     path('robots.txt',
          include('robots.urls')),
 
-    path('accounts/register/',
-         RegistrationView.as_view(success_url='/'),
-         name='django_registration_register'),
+# Uncomment below to allow user creation from path accounts/register
+#     path('accounts/register/',
+#          RegistrationView.as_view(success_url='/'),
+#          name='django_registration_register'),
 
     path('accounts/',
          include('django_registration.backends.one_step.urls')),
@@ -40,17 +39,4 @@ urlpatterns = [
 
     path('',
          include('profiles.urls')),
-#     path('api/',
-#          include('profiles.api.urls')),
-
-#     path('api-auth/',
-#          include('rest_framework.urls')),
-
-#     path('api/rest-auth/',
-#          include('rest_auth.urls')),
-
-#     path('api/rest-auth/registration/',
-#          include('rest_auth.registration.urls')),
-
-#     re_path(r'^.*$', IndexTemplateView.as_view(), name='vue-entry-point'),
 ]

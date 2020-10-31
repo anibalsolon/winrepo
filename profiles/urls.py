@@ -2,6 +2,7 @@ from django.urls import path
 from django.contrib.sitemaps.views import sitemap
 from django.views.generic import TemplateView
 
+
 from .sitemaps import (HomeSitemap,
                        FaqSitemap,
                        AboutSitemap,
