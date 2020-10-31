@@ -158,24 +158,27 @@ class CreateUser(CreateView):
 
     def form_valid(self, form):
         form.save()
+        return super(CreateUser, self).form_valid(form)
 
     def get_success_url(self):
-        return reverse('profiles:home')
-        # return reverse('profiles:create', kwargs={'pk': self.object.profile.pk})
+        # return reverse('profiles:home')
+        profile_id = self.object.profile.pk
+        # Once the user is created, open the form to edit the profile
+        return reverse('profiles:edit', kwargs={'pk': self.object.profile.pk})
 
 
-class CreateProfile(SuccessMessageMixin, CreateView):
-    template_name = 'profiles/profile_form.html'
-    form_class = CreateProfileModelForm
-    success_message = "The profile for %(name)s was created successfully"
+# class CreateProfile(SuccessMessageMixin, CreateView):
+#     template_name = 'profiles/profile_form.html'
+#     form_class = CreateProfileModelForm
+#     success_message = "The profile for %(name)s was created successfully"
 
-    def form_valid(self, form):
-        # form.send_email()
-        form.save()
-        return super(CreateProfile, self).form_valid(form)
+#     def form_valid(self, form):
+#         # form.send_email()
+#         form.save()
+#         return super(CreateProfile, self).form_valid(form)
 
-    def get_success_url(self):
-        return reverse('profiles:detail', kwargs={'pk': self.object.pk})
+#     def get_success_url(self):
+#         return reverse('profiles:detail', kwargs={'pk': self.object.pk})
 
 
 class CreateRecommendation(SuccessMessageMixin, FormView):
