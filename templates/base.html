@@ -65,6 +65,9 @@
 				<li class="nav-item {% block nav-create-classes %}{% endblock nav-create-classes %}">
 					<a class="nav-link h6" href="{% url 'profiles:create' %}">Create profile</a>
 				</li>
+				<li class="nav-item {% block nav-login-classes %}{% endblock nav-login-classes %}">
+					<a class="nav-link h6" href="{% url 'profiles:login' %}">Sign In</a>
+				</li>	
 				<li class="nav-item {% block nav-recommend-classes %}{% endblock nav-recommend-classes %}">
 					<a class="nav-link h6" href="{% url 'profiles:recommend' %}">Recommend</a>
 				</li>
@@ -74,6 +77,13 @@
 				<li class="nav-item {% block nav-about-classes %}{% endblock nav-about-classes %}">
 					<a class="nav-link h6" href="{% url 'profiles:about' %}">About</a>
 				</li>
+				{% if user.is_authenticated %}
+				{% block page %}
+					<li class="nav-item {% block nav-about2-classes %}{% endblock nav-about2-classes %}">
+						<a class="nav-link h6" href="{% url 'profiles:about' %}">About 2</a>
+					</li>	
+				{% endblock %}	
+				{% endif %}
 			</ul>
 		</div>
 		<button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup"

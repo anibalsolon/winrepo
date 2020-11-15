@@ -16,6 +16,10 @@ from dal.autocomplete import Select2QuerySetView
 
 from .models import Profile, Recommendation, Country
 from .forms import CreateProfileModelForm, RecommendModelForm, CreateUserForm
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import login, authenticate
+from django.shortcuts import render
+from django.contrib import messages
 
 
 class Home(ListView):
@@ -165,7 +169,6 @@ class CreateUser(CreateView):
         profile_id = self.object.profile.pk
         # Once the user is created, open the form to edit the profile
         return reverse('profiles:edit', kwargs={'pk': self.object.profile.pk})
-
 
 # class CreateProfile(SuccessMessageMixin, CreateView):
 #     template_name = 'profiles/profile_form.html'
