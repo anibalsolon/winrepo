@@ -62,12 +62,14 @@
 				<li class="nav-item {% block nav-repository-classes %}{% endblock nav-repository-classes %}">
 					<a class="nav-link h6" href="{% url 'profiles:index' %}">Repository</a>
 				</li>
+				{% if not user.is_authenticated %}
 				<li class="nav-item {% block nav-create-classes %}{% endblock nav-create-classes %}">
 					<a class="nav-link h6" href="{% url 'profiles:create' %}">Create profile</a>
 				</li>
 				<li class="nav-item {% block nav-login-classes %}{% endblock nav-login-classes %}">
 					<a class="nav-link h6" href="{% url 'profiles:login' %}">Sign In</a>
-				</li>	
+				</li>
+				{% endif %}	
 				<li class="nav-item {% block nav-recommend-classes %}{% endblock nav-recommend-classes %}">
 					<a class="nav-link h6" href="{% url 'profiles:recommend' %}">Recommend</a>
 				</li>
@@ -78,11 +80,15 @@
 					<a class="nav-link h6" href="{% url 'profiles:about' %}">About</a>
 				</li>
 				{% if user.is_authenticated %}
-				{% block page %}
-					<li class="nav-item {% block nav-about2-classes %}{% endblock nav-about2-classes %}">
-						<a class="nav-link h6" href="{% url 'profiles:about' %}">About 2</a>
-					</li>	
-				{% endblock %}	
+					<li class="nav-item dropdown ml-auto">
+						<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Welcome, {{ user.get_full_name }}!</a>
+						<div class="dropdown-menu dropdown-menu-right">
+							<a href="#" class="dropdown-item">My profile</a>
+							<a href="#" class="dropdown-item">Edit Profile</a>
+							<div class="dropdown-divider"></div>
+							<a href="{% url 'profiles:logout' %}" class="dropdown-item">Logout</a>
+						</div>
+					</li>
 				{% endif %}
 			</ul>
 		</div>

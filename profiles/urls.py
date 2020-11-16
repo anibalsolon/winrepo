@@ -1,7 +1,7 @@
 from django.urls import path
 from django.contrib.sitemaps.views import sitemap
 from django.views.generic import TemplateView
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, LogoutView
 
 
 from .sitemaps import (HomeSitemap,
@@ -35,7 +35,9 @@ urlpatterns = [
     path('list/create', views.CreateUser.as_view(),
          name='create'),
     path('login/', LoginView.as_view(), 
-         name='login'),     
+         name='login'),
+    path('logout/', LogoutView.as_view(), 
+         name='logout'),          
     path('list/<int:pk>/recommend', views.CreateRecommendation.as_view(),
          name='recommend_profile'),
     path('list/recommend', views.CreateRecommendation.as_view(),
