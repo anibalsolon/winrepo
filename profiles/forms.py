@@ -12,6 +12,31 @@ from .models import Profile, Recommendation
 class CaptchaForm(forms.Form):
     captcha = ReCaptchaField(widget=ReCaptchaV3, label=False)
 
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = (
+            'name',
+            'institution',
+            'country',
+            'contact_email',
+            'webpage',
+            'position',
+            'grad_month',
+            'grad_year',
+            'brain_structure',
+            'modalities',
+            'methods',
+            'domains',
+            'keywords',
+        )
+
+    def save(self, user=None):
+        user_profile = super(UserProfileForm, self).save(commit=False)
+        if user:
+            user_profile.user = user
+        user_profile.save()
+        return user_profile
 
 # class CreateUserForm(CaptchaForm, UserCreationForm):
 class CreateUserForm(UserCreationForm):

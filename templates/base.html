@@ -67,7 +67,7 @@
 					<a class="nav-link h6" href="{% url 'profiles:create' %}">Create profile</a>
 				</li>
 				<li class="nav-item {% block nav-login-classes %}{% endblock nav-login-classes %}">
-					<a class="nav-link h6" href="{% url 'profiles:login' %}">Sign In</a>
+					<a class="nav-link h6" href="{% url 'profiles:login' %}">Log in</a>
 				</li>
 				{% endif %}	
 				<li class="nav-item {% block nav-recommend-classes %}{% endblock nav-recommend-classes %}">
@@ -83,8 +83,7 @@
 					<li class="nav-item dropdown ml-auto">
 						<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Welcome, {{ user.get_full_name }}!</a>
 						<div class="dropdown-menu dropdown-menu-right">
-							<a href="#" class="dropdown-item">My profile</a>
-							<a href="#" class="dropdown-item">Edit Profile</a>
+							<a href="{% url 'profiles:account' user.profile.id %}" class="dropdown-item">My profile</a>
 							<div class="dropdown-divider"></div>
 							<a href="{% url 'profiles:logout' %}" class="dropdown-item">Logout</a>
 						</div>

@@ -15,11 +15,10 @@ from django.views.generic.detail import DetailView
 from dal.autocomplete import Select2QuerySetView
 
 from .models import Profile, Recommendation, Country
-from .forms import CreateProfileModelForm, RecommendModelForm, CreateUserForm
-from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import login, authenticate
+from .forms import CreateProfileModelForm, RecommendModelForm, CreateUserForm, UserProfileForm
 from django.shortcuts import render
 from django.contrib import messages
+from django.contrib.auth.models import User
 
 
 class Home(ListView):
@@ -132,6 +131,17 @@ class ProfileDetail(DetailView):
     model = Profile
     queryset = Profile.objects.filter(is_public=True)
 
+class NewUserProfileView(FormView):
+    template_name = "profiles/user_profile.html"
+    form_class = UserProfileForm
+
+    def form_valid(self, form):
+        form.save(self.request.user)
+        return super(NewUserProfileView, self).form_valid(form)
+
+    def get_success_url(self, *args, **kwargs):
+        #profile_id = self.object.profile.pk
+        return reverse('profiles:account', kwargs={'pk': self.object.profile.pk})
 
 class UpdateProfile(SuccessMessageMixin, UpdateView):
     model = Profile
@@ -155,6 +165,27 @@ class UpdateProfile(SuccessMessageMixin, UpdateView):
     def get_success_url(self):
         return reverse('profiles:detail', args=(self.object.id,))
 
+class UpdateUserProfile(SuccessMessageMixin, UpdateView):
+    model = Profile
+    fields = [
+        'name',
+        'contact_email',
+        'webpage',
+        'institution',
+        'country',
+        'position',
+        'grad_month',
+        'grad_year',
+        'brain_structure',
+        'modalities',
+        'methods',
+        'domains',
+        'keywords',
+    ]
+    success_message = "The profile for %(name)s was updated successfully"
+
+    def get_success_url(self):
+        return reverse('profiles:account', args=(self.object.id,))
 
 class CreateUser(CreateView):
     form_class = CreateUserForm
