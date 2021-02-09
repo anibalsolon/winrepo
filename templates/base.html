@@ -81,9 +81,9 @@
 				</li>
 				{% if user.is_authenticated %}
 					<li class="nav-item dropdown ml-auto">
-						<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Welcome, {{ user.get_full_name }}!</a>
+						<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Welcome, {{ user.first_name }}!</a>
 						<div class="dropdown-menu dropdown-menu-right">
-							<a href="{% url 'profiles:account' user.profile.id %}" class="dropdown-item">My profile</a>
+							<a href="{% url 'profiles:user_profile' %}" class="dropdown-item">My profile</a>
 							<div class="dropdown-divider"></div>
 							<a href="{% url 'profiles:logout' %}" class="dropdown-item">Logout</a>
 						</div>

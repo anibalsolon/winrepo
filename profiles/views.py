@@ -7,18 +7,16 @@ from operator import and_, or_
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Q
 from django.urls import reverse
-from django.shortcuts import get_object_or_404
-from django.views.generic.edit import CreateView, UpdateView, FormView
+from django.shortcuts import get_object_or_404, redirect
+from django.views.generic.edit import CreateView, FormView, ModelFormMixin
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
+from django.views.generic import TemplateView
 
 from dal.autocomplete import Select2QuerySetView
 
 from .models import Profile, Recommendation, Country
-from .forms import CreateProfileModelForm, RecommendModelForm, CreateUserForm, UserProfileForm
-from django.shortcuts import render
-from django.contrib import messages
-from django.contrib.auth.models import User
+from .forms import RecommendModelForm, CreateUserForm, UserProfileForm
 
 
 class Home(ListView):
@@ -131,88 +129,48 @@ class ProfileDetail(DetailView):
     model = Profile
     queryset = Profile.objects.filter(is_public=True)
 
-class NewUserProfileView(FormView):
+
+class UserProfileView(TemplateView):
     template_name = "profiles/user_profile.html"
+
+
+class UserProfileEditView(SuccessMessageMixin, ModelFormMixin, FormView):
+    template_name = "profiles/user_profile_form.html"
     form_class = UserProfileForm
+    success_message = 'Your profile has been stored successfully!'
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.request.user.profile
+        return super().get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.request.user.profile
+        return super().post(request, *args, **kwargs)
 
     def form_valid(self, form):
         form.save(self.request.user)
-        return super(NewUserProfileView, self).form_valid(form)
-
-    def get_success_url(self, *args, **kwargs):
-        #profile_id = self.object.profile.pk
-        return reverse('profiles:account', kwargs={'pk': self.object.profile.pk})
-
-class UpdateProfile(SuccessMessageMixin, UpdateView):
-    model = Profile
-    fields = [
-        'name',
-        'contact_email',
-        'webpage',
-        'institution',
-        'country',
-        'position',
-        'grad_month',
-        'grad_year',
-        'brain_structure',
-        'modalities',
-        'methods',
-        'domains',
-        'keywords',
-    ]
-    success_message = "The profile for %(name)s was updated successfully"
+        return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse('profiles:detail', args=(self.object.id,))
+        return reverse('profiles:user_profile')
 
-class UpdateUserProfile(SuccessMessageMixin, UpdateView):
-    model = Profile
-    fields = [
-        'name',
-        'contact_email',
-        'webpage',
-        'institution',
-        'country',
-        'position',
-        'grad_month',
-        'grad_year',
-        'brain_structure',
-        'modalities',
-        'methods',
-        'domains',
-        'keywords',
-    ]
-    success_message = "The profile for %(name)s was updated successfully"
-
-    def get_success_url(self):
-        return reverse('profiles:account', args=(self.object.id,))
 
 class CreateUser(CreateView):
     form_class = CreateUserForm
     template_name = 'profiles/signup_form.html'
+
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect('profiles:user_profile')
+        return super().get(request, *args, **kwargs)
 
     def form_valid(self, form):
         form.save()
         return super(CreateUser, self).form_valid(form)
 
     def get_success_url(self):
-        # return reverse('profiles:home')
         profile_id = self.object.profile.pk
-        # Once the user is created, open the form to edit the profile
-        return reverse('profiles:edit', kwargs={'pk': self.object.profile.pk})
-
-# class CreateProfile(SuccessMessageMixin, CreateView):
-#     template_name = 'profiles/profile_form.html'
-#     form_class = CreateProfileModelForm
-#     success_message = "The profile for %(name)s was created successfully"
-
-#     def form_valid(self, form):
-#         # form.send_email()
-#         form.save()
-#         return super(CreateProfile, self).form_valid(form)
-
-#     def get_success_url(self):
-#         return reverse('profiles:detail', kwargs={'pk': self.object.pk})
+        return reverse('profiles:edit', kwargs={'pk': profile_id})
 
 
 class CreateRecommendation(SuccessMessageMixin, FormView):
