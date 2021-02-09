@@ -178,6 +178,14 @@ class CreateRecommendation(SuccessMessageMixin, FormView):
     form_class = RecommendModelForm
     success_message = 'Your recommendation has been submitted successfully!'
 
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            profile = request.user.profile
+            profile_id = self.kwargs.get('pk')
+            if profile.id == profile_id:
+                return redirect('profiles:detail', pk=profile_id)
+        return super().get(request, *args, **kwargs)
+
     def form_valid(self, form):
         recommendation = form.save()
         self.profile_id = recommendation.profile.id

@@ -38,8 +38,10 @@
 				<a class="btn pill-btn text-white btn-secondary m-1 webpage-btn{% if profile.webpage == "" %} disabled{% endif %}" href="{{ profile.webpage }}" target="_blank" rel="noopener">
 					<i class="fas fa-address-card"></i> View Page</a>
 
-				<a class="btn pill-btn btn-outline-primary m-1 recommend-btn" href="{% url 'profiles:recommend_profile' profile.id %}">
-					<i class="fas fa-comment"></i> Recommend</a>
+				{% if not user.is_authenticated or profile.id != user.profile.id %}
+					<a class="btn pill-btn btn-outline-primary m-1 recommend-btn" href="{% url 'profiles:recommend_profile' profile.id %}">
+						<i class="fas fa-comment"></i> Recommend</a>
+				{% endif %}
 			</div>
 		</div>
 	</div>
@@ -132,9 +134,11 @@
 	{% else %}
 		<div class="m-1 pt-4">
 		<p>No recommendations have been made for {{ profile.name }} yet.</p>
-		<p>Have you seen her at a conference? If so, please consider
-			<b><a href="{% url 'profiles:recommend_profile' profile.id %}" target="_blank">writing her one.</a></b>
-		</p>
+		{% if not user.is_authenticated or profile.id != user.profile.id %}
+			<p>Have you seen her at a conference? If so, please consider
+				<b><a href="{% url 'profiles:recommend_profile' profile.id %}" target="_blank">writing her one.</a></b>
+			</p>
+		{% endif %}
 		</div>
 	{% endif %}
 	<p class="m-1"></p>
